@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10 個 Vue3 開發上面的小細節 | 六角學院</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="text" />
+        <h1>{{text}}</h1>
+        <h2>X:{{data.x}} Y:{{data.y}}</h2>
+        <button @click="handtextChange">Change</button>
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        //把Vue裡面的ref和reactive方法拿出來，不然每次呼叫都要Vue.ref()和Vue.reactive()!
+        //var ref = Vue.ref;
+        //var reactive = Vue.reactive;
+        //透過ES6的解構語法，可以簡寫成這樣
+        const { ref, reactive } = Vue;
+
+        const app = {
+            //用新的Composition API寫法，不用寫this
+            //和原本的data,method..只能擇一使用
+            setup() {
+                //ref可以接受any任何資料型態
+                //用ref包裝起來的資料會產生一個用新的ES6語法包裝起來的object(RefImpl)
+                //Vue會對資料作監控，不包ref直接return也可以顯示但就不會監控
+                const text = ref("Hello Mike");
+                //console.log(text);
+
+                //reactive只接受object(通常是放物件)和array!
+                const data = reactive({x:0, y:120});
+
+                //不需用丟到template的東西就不用丟
+                let timer = null;
+                timer = setInterval(
+                    ()=>{console.log('做一些改變資料的事情');
+                },1000);
+                clearInterval(timer);
+
+                const handtextChange = () => {
+                    //ref要用.value去取出資料!!
+                    text.value = "handtextChange";
+                    //reactive不用再.value
+                    data.x = 555;
+                    data.y = 110;
+                }
+
+                return { //把data or Fuction放到畫面上
+                    text,
+                    data,
+                    handtextChange,
+                };
+            }
+        };
+
+        Vue.createApp(app).mount("#app");
+    </script>
+</body>
+</html>
