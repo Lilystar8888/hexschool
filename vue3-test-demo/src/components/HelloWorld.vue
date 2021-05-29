@@ -1,5 +1,5 @@
 <script>
-import {ref} from 'vue';
+import {ref, onMounted} from 'vue';
 export default {
   name: 'HelloWorld',
   props: {
@@ -20,11 +20,18 @@ export default {
   setup(props, context){
     const text = ref("Test Lily Emit");
     const handEmitClick = () => {
-      console.log(context);
+      //console.log(context);
       //參數1:事件名稱, 參數2:payload
       context.emit("handEmit", {data: 1});
     }
+
+    const dom = ref(null);
+    onMounted(() => {
+      console.log(dom)
+    });
+    
     return {
+      dom,
       props,
       text,
       handEmitClick,
@@ -36,7 +43,7 @@ export default {
 <template>
   <!--Vue3開始component裡面不需要entry div包起來-->
   <!--額外的element也會造成渲染的負擔!!-->
-  <h1>Mike</h1>
+  <h2 ref="dom">Mike</h2>
   <h2>Vue3</h2>
   <!--props傳進來的參數，建議不要直接{{msg}}-->
   <!--因為這樣會不知道是setup傳進來的，props傳進來的-->
