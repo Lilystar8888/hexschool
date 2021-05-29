@@ -8,14 +8,45 @@
 </head>
 <body>
     <div id="app">
+        <input type="text" name="username" v-model="userData.username" />
+        <input type="text" name="email" v-model="userData.email" />
+        <input type="text" name="tel" v-model="userData.tel" />
+        <button @click="submitFn">Submit</button>
     </div>
     <script src="https://unpkg.com/vue@next"></script>
     <script>
         const { ref, reactive } = Vue;
 
+        
         const app = {
             setup() {
+
+                // const username = ref("username");
+                // const email = ref("email");
+                // const email = ref("email");
+
+                // 盡量將同一個表單的資料寫在一個object裡面
+                const userData = reactive({
+                    username: "",
+                    email: "",
+                    tel: "",
+                });
+
+                const submitFn = () => {
+                    console.log(userData);
+                    // 印出結果:
+                    // Proxy {username: "aaa", email: "bbb", tel: "cccc"}
+                    // [[Handler]]: Object
+                    // [[Target]]: Object
+                    // [[IsRevoked]]: false
+                };
+                
                 return {
+                    userData,
+                    submitFn,
+                    // username,
+                    // email,
+                    // tel,
                 };
             }
         };
