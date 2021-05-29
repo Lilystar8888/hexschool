@@ -47,6 +47,18 @@
                         //ref=> Jacky
                     }
                 );
+
+                //參考官方文件，搜尋watch，可以用array的方式監控多個值
+                //https://v3.vuejs.org/guide/reactivity-computed-watchers.html#watching-multiple-sources
+                // const firstName = ref('');
+                // const lastName = ref('');
+
+                // watch([firstName, lastName], (newValues, prevValues) => {
+                //     console.log(newValues, prevValues);
+                // })
+
+                // firstName.value = "John"; // logs: ["John",""] ["", ""]
+                // lastName.value = "Smith"; // logs: ["John", "Smith"] ["John", ""]
                 
 
                 const submitFn = () => {
