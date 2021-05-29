@@ -8,7 +8,8 @@ export default {
     HelloWorld
   },
   setup(){
-    const {x, y} = useMouse();
+    const {x, y, name} = useMouse();
+    console.log(name);
     const handFunction = () => {
       console.log('handFunction');
     }
@@ -22,9 +23,9 @@ export default {
 </script>
 
 <template>
-  <h1>{{x}}:{{y}}</h1>
   <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App" @handEmit="handFunction" />
+  <h1>{{x}}:{{y}}</h1>
 </template>
 
 <style>
