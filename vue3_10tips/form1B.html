@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ref和reactive根本差別在哪裡 - 10 個 Vue3 開發上面的小細節 | 六角學院</title>
+</head>
+<body>
+    <div id="app">
+        <button @click="submitFn">Submit</button>
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        const { ref, reactive, watch, watchEffect } = Vue;
+        
+        const app = {
+            setup() {
+
+
+                const refObject = ref({name: ""});
+                const reactiveObject = reactive({name: ""});
+
+                //watchEffect是個黑魔法，裡面只會帶一個callback，
+                //只有一開始執行一次，之後除非放在裡面的值被改變時才會執行
+                //不然submit再多次都不會動作!!
+                watchEffect(()=>{ 
+                    //自己做個handler擋下第一次
+                    if(!reactiveObject.name) return;
+                    console.log('watchEffect:reactiveObject=>'+reactiveObject.name);
+                });
+                
+                const submitFn = () => {
+                    //ref包裝起來的東西不管是不是物件都要用.value去取出
+                    refObject.value.name = "Jacky";
+                    reactiveObject.name = "Mike";     
+                };
+                
+                return {
+                    submitFn
+                };
+            }
+        };
+
+        Vue.createApp(app).mount("#app");
+    </script>
+</body>
+</html>
