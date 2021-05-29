@@ -26,12 +26,39 @@
                 //ref的第一層只有到value這個地方
 
                 //const reactiveObject = reactive({name: ""});
-                const reactiveObject = reactive({name: {age:""}});
+                //const reactiveObject = reactive({name: {age:""}});
                 //reactive只接受object和array這兩種資料型別，
                 //但可以針對object和array的深層變動做監控
 
-                watch(reactiveObject, (newVal)=>{
-                    console.log("reactive=>", newVal);
+                const reactiveObject = reactive({name: ""});
+
+
+                //如何優化效能，可以只針對object裡面的那個key去做監控
+                //跳出黃色vue@next:1287 [Vue warn]: Invalid watch source:  
+                //Mike A watch source can only be a getter/effect function, a ref, a reactive object, or an array of these types. 
+                //at <App>
+                //因為watch要用一個函式()=>返回回去
+
+                watch(
+                    ()=> reactiveObject.name, 
+                    (newVal)=>{
+                        console.log("reactive=>", newVal);
+                        //印出結果:
+                        //reactive=> Mike
+                    }
+                );
+
+                watch(
+                    ()=> refObject.value.name, 
+                    (newVal)=>{
+                        console.log("ref=>", newVal);
+                        //印出結果:
+                        //ref=> Jacky
+                    }
+                );
+                
+                //watch(reactiveObject, (newVal)=>{
+                    //console.log("reactive=>", newVal);
                     //印出結果:
                     //reactive=> Proxy {name: "Mike"}
                     //槽狀結構印出結果:
@@ -41,28 +68,28 @@
                         // name: {age: ""}
                         // __proto__: Object
                         // [[IsRevoked]]: false
-                });
+                //});
 
-                watch(refObject, 
-                    (newVal)=>{
-                        console.log("ref=>", newVal);
-                        //正常印出結果:
-                        //沒有印出任何東西
-                        //deep後印出結果:
-                        //ref=> Proxy {name: "Jacky"}
-                    },
-                    {deep: true} 
-                    //不推薦deep的作法，
-                    //因為效能會變差，它會直接去掃過object所有階層
-                );
+                // watch(refObject, 
+                //     (newVal)=>{
+                //         console.log("ref=>", newVal);
+                //         //正常印出結果:
+                //         //沒有印出任何東西
+                //         //deep後印出結果:
+                //         //ref=> Proxy {name: "Jacky"}
+                //     }
+                //     //,{deep: true} 
+                //     //不推薦deep的作法，
+                //     //因為效能會變差，它會直接去掃過object所有階層
+                // );
 
                 const submitFn = () => {
                     //ref包裝起來的東西不管是不是物件都要用.value去取出
                     refObject.value.name = "Jacky";
-                    //reactiveObject.name = "Mike";
-                    reactiveObject.age = "12";
+                    reactiveObject.name = "Mike";
+                    //reactiveObject.age = "12";
 
-                    console.log(refObject);
+                    //console.log(refObject);
                     //印出結果:
                     // {
                     //     "_rawValue": {
@@ -71,7 +98,7 @@
                     //  ...中略
                     // }
                     //可以看出其實資料是有改變!
-                    console.log(reactiveObject);
+                    //console.log(reactiveObject);
                     //印出結果:
                     //Proxy {name: "Mike"}
                     
