@@ -15,17 +15,18 @@
     </div>
     <script src="https://unpkg.com/vue@next"></script>
     <script>
-        const { ref, reactive } = Vue;
-
+        const { ref, reactive, watch } = Vue;
         
         const app = {
             setup() {
 
+                // 如果只是要做一個選單開關的boolean
+                const isMenuOpen = ref(false);
+
+                // 盡量將同一個表單的資料寫在一個object裡面
                 // const username = ref("username");
                 // const email = ref("email");
                 // const email = ref("email");
-
-                // 盡量將同一個表單的資料寫在一個object裡面
                 const userData = reactive({
                     username: "",
                     email: "",
@@ -39,7 +40,13 @@
                     // [[Handler]]: Object
                     // [[Target]]: Object
                     // [[IsRevoked]]: false
+                    isMenuOpen.value = true;
                 };
+
+                watch(isMenuOpen, (newVal, oldVal)=>{
+                    console.log("newVal=>", newVal);
+                    console.log("oldVal=>", oldVal);
+                });
                 
                 return {
                     userData,
