@@ -1,9 +1,5 @@
-<template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App" @handEmit="handFunction" />
-</template>
-
 <script>
+import {useMouse} from './composition-api/useMouse'
 import HelloWorld from './components/HelloWorld.vue'
 
 export default {
@@ -12,15 +8,24 @@ export default {
     HelloWorld
   },
   setup(){
+    const {x, y} = useMouse();
     const handFunction = () => {
       console.log('handFunction');
     }
     return {
+      x,
+      y,
       handFunction,
     }
   }
 }
 </script>
+
+<template>
+  <h1>{{x}}:{{y}}</h1>
+  <img alt="Vue logo" src="./assets/logo.png">
+  <HelloWorld msg="Welcome to Your Vue.js App" @handEmit="handFunction" />
+</template>
 
 <style>
 #app {
