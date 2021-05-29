@@ -33,6 +33,11 @@
                     tel: "",
                 });
 
+                watch(isMenuOpen, (newVal, oldVal)=>{
+                    console.log("newVal=>", newVal);
+                    console.log("oldVal=>", oldVal);
+                });
+
                 const submitFn = () => {
                     console.log(userData);
                     // 印出結果:
@@ -42,11 +47,6 @@
                     // [[IsRevoked]]: false
                     isMenuOpen.value = true;
                 };
-
-                watch(isMenuOpen, (newVal, oldVal)=>{
-                    console.log("newVal=>", newVal);
-                    console.log("oldVal=>", oldVal);
-                });
                 
                 return {
                     userData,
