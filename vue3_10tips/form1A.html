@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ref和reactive根本差別在哪裡 - 10 個 Vue3 開發上面的小細節 | 六角學院</title>
+</head>
+<body>
+    <div id="app">
+        <button @click="submitFn">Submit</button>
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        const { ref, reactive, watch } = Vue;
+        
+        const app = {
+            setup() {
+
+                //除了在不同情境使用的選擇以外
+                //實際上ref和reactive根本差別在哪裡
+
+                const refObject = ref({name: ""});
+                const reactiveObject = reactive({name: ""});
+
+                //如何優化效能，可以只針對object裡面的那個key去做watch
+                //跳出黃色警告，因為watch要用一個函式()=>返回回去
+                //vue@next:1287 [Vue warn]: Invalid watch source:  
+                //Mike A watch source can only be a getter/effect function, 
+                // a ref, a reactive object, or an array of these types. 
+                //at <App>
+
+                watch(
+                    ()=> reactiveObject.name, 
+                    (newVal)=>{
+                        console.log("reactive=>", newVal);
+                        //印出結果:
+                        //reactive=> Mike
+                    }
+                );
+
+                watch(
+                    ()=> refObject.value.name, 
+                    (newVal)=>{
+                        console.log("ref=>", newVal);
+                        //印出結果:
+                        //ref=> Jacky
+                    }
+                );
+                
+
+                const submitFn = () => {
+                    //ref包裝起來的東西不管是不是物件都要用.value去取出
+                    refObject.value.name = "Jacky";
+                    reactiveObject.name = "Mike";     
+                };
+                
+                return {
+                    submitFn
+                };
+            }
+        };
+
+        Vue.createApp(app).mount("#app");
+    </script>
+</body>
+</html>
