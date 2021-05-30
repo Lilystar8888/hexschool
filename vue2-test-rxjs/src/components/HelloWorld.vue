@@ -120,10 +120,18 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import Rx from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
 
 @Component
 export default class HelloWorld extends Vue {
   @Prop() private msg!: string;
+  private testAPI() {
+    console.log(Observable);
+  }
+  public mounted() {
+    this.testAPI();
+  }
 }
 </script>
 
